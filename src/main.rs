@@ -1,5 +1,10 @@
-use core::task;
-use std::{fs::File, path::Path};
+use std::{
+    fs::{self, File},
+    io::Write,
+    path::Path,
+};
+
+use serde_json::json;
 
 use crate::model::task::Task;
 mod model;
@@ -32,6 +37,8 @@ fn main() {
     println!("New Task: {:?}", new_task);
 
     tasks.push(new_task);
+
+    fs::write(json_file_path, json!(tasks).to_string()).expect("Failed to write to .tasks.json file");
 
     tasks.iter().for_each(|task| {
         println!("{:?}", task);
